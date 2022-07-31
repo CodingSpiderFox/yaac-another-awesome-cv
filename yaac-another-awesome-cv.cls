@@ -2,6 +2,7 @@
 %
 % Author:
 % Christophe Roger (Darwiin)
+% Changed 2022 by CodingSpiderFox
 %
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3c
@@ -17,7 +18,7 @@
 %
 % This work consists of the files awesome-source-cv.cls
 
-\ProvidesClass{yaac-another-awesome-cv}[2020/03/24  v2.3.1 'YAAC: Another Awesome CV' Class]
+\ProvidesClass{yaac-another-awesome-cv}[2020/03/24  v2.2.1 'YAAC: Another Awesome CV' Class]
 
 \def\@@ptsize{10pt}
 
@@ -66,7 +67,7 @@
 
 % Dependences
 %A Few Useful Packages
-\RequirePackage[english,french]{babel}
+\RequirePackage[english,german]{babel}
 \RequirePackage[utf8]{luainputenc}
 \RequirePackage{fontspec} 					                 % for loading fonts
 \RequirePackage{url,parskip} 	    % other packages for formatting
@@ -214,7 +215,7 @@
 
 % Render author's name
 % Usage: \user{<firstanme>}{<lastname>}
-\newcommand\user[2]{\color{accentcolor}{\LARGE #1 \textsc{\textbf{#2}}}\color{Black}}
+\newcommand\user[3]{\color{accentcolor}{\LARGE #1 #2 - #3\color{Black}}}
 
 % Render a text with its symbol
 % Usage; \socialtext{<icon>}{<label>}
@@ -229,9 +230,10 @@
 % Usage: \firstname{<firstname>}
 % Usage: \lastname{<lastname>}
 % Usage: \familyname{<familyname>}
-\newcommand*{\name}[2]{\def\@firstname{#1}\def\@lastname{#2}}
+\newcommand*{\name}[3]{\def\@firstname{#1}\def\@lastname{#2}\def\@role{#3}}
 \newcommand*{\firstname}[1]{\def\@firstname{#1}}
 \newcommand*{\lastname}[1]{\def\@lastname{#1}}
+\newcommand*{\role}[1]{\def\@role{#1}}
 \newcommand*{\familyname}[1]{\def\@lastname{#1}}
 \def\@familyname{\@lastname}
 
@@ -337,7 +339,7 @@
     }{
       \begin{minipage}{\dimexpr\linewidth-\@photodiameter-2em}
     }
-    \color{accentcolor}\user{\@firstname}{\@lastname}\color{black}\\
+    \color{accentcolor}\user{\@firstname}{\@lastname}{\@role}\color{black}\\
     \small{\@socialinfo}
     \end{minipage}
     \ifdef{\@photodiameter}{
@@ -352,7 +354,7 @@
     }{
       \begin{minipage}{\dimexpr\linewidth-\@photodiameter-2em}
     }
-    \user{\@firstname}{\@lastname}\\
+    \user{\@firstname}{\@lastname}{\@role}\\
     \resumetitle{\@tagline}
     \smallskip\\
     \small{\@socialinfo}
@@ -439,12 +441,12 @@
 %                      <Experience description (Could be a list)>
 %                    }
 %                    {<Technology list>}
-\newcommand\experience[7]{
-  \textbf{#1}    & \textbf{#2, \textsc{#3}, #4}   								\\*
-  \textbf{#5}    & \begin{minipage}[t]{\rightcolumnlength}
-  					         #6
+\newcommand\experience[6]{
+  \textbf{#1}    & \textbf{#2, #3}   								\\*
+  \textbf{#4}    & \begin{minipage}[t]{\rightcolumnlength}
+  					         #5
                    \end{minipage}										\\*
-                 & \footnotesize{\foreach \n in {#7}{\cvtag{\n}}} 	\\
+                 & \footnotesize{\foreach \n in {#6}{\cvtag{\n}}} 	\\
   }
 
 % Render a consultant experience in the experiences environment
@@ -539,29 +541,3 @@
   \end{minipage}%
 }
 
-% Define the 'publications' environment
-\newenvironment{publications}{%
-\vspace{5pt}
-}
-
-%% Bibliography
-\usepackage[backend=bibtex,style=authoryear,natbib=true]{biblatex} 
-
-\newcounter{bibitem}
-\AtBeginBibliography{\setcounter{bibitem}{1}}
-\AtEveryBibitem{\hspace{1em}\makebox[1.5em][l]{{\thebibitem}\stepcounter{bibitem}.}}
-
-\setlength{\bibitemsep}{1.5ex}
-\setlength{\bibhang}{2.7em}
-\NewBibliographyString{retrieved}
-\NewBibliographyString{from}
-
-\urlstyle{tt}
-
-\def\@subbibfont{\large\color{accentcolor}}
-\newcommand\subbibfont[1]{\gdef\@subbibfont{#1}}
-\defbibheading{subbibliography}{\vskip 5pt {\@subbibfont\hspace{0pt}#1}\par}
-
-\defbibfilter{booksandchapters}{%
-( type=book or type=incollection )
-}
